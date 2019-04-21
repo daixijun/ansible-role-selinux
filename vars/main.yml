@@ -1,6 +1,6 @@
 ---
 __packages:
-  Redhat:
+  RedHat:
     - libselinux-python
     - selinux-policy
   Debian:
