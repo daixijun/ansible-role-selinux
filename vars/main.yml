@@ -1,0 +1,10 @@
+---
+__packages:
+  Redhat:
+    - libselinux-python
+    - selinux-policy
+  Debian:
+    - python-selinux
+  Ubuntu:
+    - python-selinux
+packages: "{{ __packages[ansible_distribution] }}"

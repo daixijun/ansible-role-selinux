@@ -1,0 +1,19 @@
+---
+- name: 安装依赖
+  package:
+    name: "{{ packages }}"
+    state: present
+  register: selinux_install_status
+  until: selinux_install_status
+  retries: 3
+
+- name: 关闭selinux
+  selinux:
+    state: disabled
+  register: se
+
+- name: 系统重启
+  reboot:
+    reboot_timeout: 600
+    test_command: getenforce
+  when: se.reboot_required
