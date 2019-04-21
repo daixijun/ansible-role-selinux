@@ -7,4 +7,4 @@ __packages:
     - python-selinux
   Ubuntu:
     - python-selinux
-packages: "{{ __packages[ansible_distribution] }}"
+packages: "{{ __packages[ansible_os_family] | default(__packages[ansible_distribution]) }}"
