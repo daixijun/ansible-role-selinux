@@ -5,6 +5,6 @@ __packages:
     - selinux-policy
   Debian:
     - python-selinux
-  Ubuntu:
-    - python-selinux
+    - selinux-policy-default
+    - selinux-policy-mls
 packages: "{{ __packages[ansible_os_family] | default(__packages[ansible_distribution]) }}"
