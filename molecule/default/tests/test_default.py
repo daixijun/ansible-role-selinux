@@ -7,6 +7,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 def test_selinux(host):
-    output = host.check_output("getenforce")
+    cmd = host.run("getenforce")
 
-    assert "0" == output
+    assert 0 == cmd.rc
+    assert "Disabled" == cmd.stdout
