@@ -2,6 +2,7 @@ Role Name
 =========
 
 [![Build Status](https://travis-ci.com/daixijun/ansible-role-selinux.svg?branch=master)](https://travis-ci.com/daixijun/ansible-role-selinux)
+[![Role downloads](https://img.shields.io/ansible/role/d/39745.svg)](https://galaxy.ansible.com/daixijun/selinux)
 
 SElinux
 
