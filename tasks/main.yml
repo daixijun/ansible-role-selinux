@@ -1,18 +1,26 @@
 ---
-- name: 安装依赖
+- name: Install dependencies
   package:
     name: "{{ packages }}"
     state: present
-  register: selinux_install_status
-  until: selinux_install_status
-  retries: 3
+  register: selinux_install_dependencies
+  async: 300
+  poll: 0
+  changed_when: False
 
-- name: 关闭selinux
+- name: Wait for dependencies install complete
+  async_status:
+    jid: "{{ selinux_install_dependencies.ansible_job_id }}"
+  register: selinux_install_dependencies_status
+  until: selinux_install_dependencies_status.finished
+  retries: 30
+
+- name: Disable selinux
   selinux:
     state: disabled
   register: se
 
-- name: 系统重启
+- name: reboot
   reboot:
     reboot_timeout: 600
     test_command: getenforce
