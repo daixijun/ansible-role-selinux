@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [centos7, centos8]
+        os: [centos6, centos7, centos8]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
           cd ..
           ln -sf ansible-role-selinux daixijun.selinux
           cd daixijun.selinux
-          molecule test --scenario-name default
+          MOLECULE_DISTRO=${{ matrix.os }} molecule test --scenario-name default
       - name: Publish role to Galaxy
         if: success()
         run: |
