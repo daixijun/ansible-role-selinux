@@ -7,4 +7,7 @@ __packages:
     - python-selinux
     - selinux-policy-default
     - selinux-policy-mls
-packages: "{{ __packages[ansible_os_family] | default(__packages[ansible_distribution]) }}"
+  RedHat_8:
+    - python3-libselinux
+    - selinux-policy
+packages: "{{ __packages[ansible_os_family+'_'+ansible_distribution_major_version] | default(__packages[ansible_distribution]) | default(__packages[ansible_os_family]) }}"
