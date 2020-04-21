@@ -1,0 +1,33 @@
+---
+name: build
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [centos7, centos8]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+          architecture: x64
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible "molecule[docker,lint]"
+      - name: Test with molecule
+        run: |
+          cd ..
+          ln -sf ansible-role-selinux daixijun.selinux
+          cd daixijun.selinux
+          molecule test --scenario-name default
+      - name: Publish role to Galaxy
+        if: success()
+        run: |
+          if [[ "${{ matrix.os }}" == "centos7" ]]; then
+            ansible-galaxy role import --api-key ${{ secrets.ANSIBLE_GALAXY_API_KEY }} $(echo $GITHUB_REPOSITORY | cut -d/ -f1) $(echo $GITHUB_REPOSITORY | cut -d/ -f2)
+          fi
