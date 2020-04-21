@@ -1,0 +1,13 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: False
+  tasks:
+    - name: Get selinux status
+      command: getenforce
+      register: selinux_status
+
+    - name: Assert that selinux state is disabled
+      assert:
+        that:
+          - selinux_status.stdout.strip() == 'Disabled'
