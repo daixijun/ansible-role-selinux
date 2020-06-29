@@ -4,22 +4,12 @@
     name: "{{ packages }}"
     update_cache: True
     state: present
-  register: selinux_install_dependencies
-  async: 300
-  poll: 0
-  changed_when: False
-
-- name: Wait for dependencies install complete
-  async_status:
-    jid: "{{ selinux_install_dependencies.ansible_job_id }}"
-  register: selinux_install_dependencies_status
-  until: selinux_install_dependencies_status.finished
-  retries: 30
 
 - name: Disable selinux
   selinux:
     state: disabled
   register: se
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: reboot
   reboot:
